@@ -52,7 +52,7 @@
 	CGRect sourceRect, destRect;
 	if (cropping) {
 		destRect = CGRectMake(0, 0, targetWidth, targetHeight);
-		float destX, destY;
+		float destX = 0.0, destY = 0.0;
 		if (resizeMethod == MGImageResizeCrop) {
 			// Crop center
 			destX = round((scaledWidth - targetWidth) / 2.0);
@@ -93,9 +93,11 @@
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
 	CGImageRef sourceImg = nil;
 	if ([UIScreen instancesRespondToSelector:@selector(scale)]) {
-		UIGraphicsBeginImageContextWithOptions(destRect.size, NO, 0.f); // 0.f for scale means "scale for device's main screen".
+		//UIGraphicsBeginImageContextWithOptions(destRect.size, NO, 0.f); // 0.f for scale means "scale for device's main screen".
+        UIGraphicsBeginImageContext(destRect.size);
 		sourceImg = CGImageCreateWithImageInRect([self CGImage], sourceRect); // cropping happens here.
-		image = [UIImage imageWithCGImage:sourceImg scale:0.0 orientation:self.imageOrientation]; // create cropped UIImage.
+		//image = [UIImage imageWithCGImage:sourceImg scale:0.0 orientation:self.imageOrientation]; // create cropped UIImage.
+        image = [UIImage imageWithCGImage:sourceImg scale:1.0 orientation:self.imageOrientation]; // create cropped UIImage.
 		
 	} else {
 		UIGraphicsBeginImageContext(destRect.size);
